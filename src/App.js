@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { HashRouter,Route,Redirect,Switch } from 'react-router-dom';
+import { Layout } from 'antd';
+import Slider from './common/component/Silder';
+import Header from './common/component/Header';
+import bookpage from './pages/book/index';
+import userpage from './pages/user/index';
 
-function App() {
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <HashRouter>
+      <Layout>
+        <Slider />
+        <Layout style={{ marginLeft: 200 }}>
+          <Header />
+          <Layout.Content style={{ padding:20 }}>
+            <Switch>
+              {/* exact代表精准匹配 */}
+              <Route path='/' exact component={ bookpage }></Route>
+              <Route path='/user' exact component={ userpage }></Route>
+              <Redirect to="/"></Redirect>
+            </Switch>
+          </Layout.Content>
+        </Layout>
+      </Layout>
+    </HashRouter>
+  )
 }
 
 export default App;
