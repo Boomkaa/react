@@ -1,38 +1,66 @@
 import React from 'react';
-import { Table } from 'antd';
+import { connect } from 'react-redux';
+import { inputChange, searchBookAction,pageClickAction,getBookListAction} from './store/createAction';
+import BookUI from './ui';
+import store from '@/store/index';
 
-const dataSource = [{
-  key: '1',
-  name: '胡彦斌',
-  age: 32,
-  address: '西湖区湖底公园1号'
-}, {
-  key: '2',
-  name: '胡彦祖',
-  age: 42,
-  address: '西湖区湖底公园1号'
-}];
+// let changePage = (page,pageSize) => {
 
-const columns = [{
-  title: '姓名',
-  dataIndex: 'name',
-  key: 'name',
-}, {
-  title: '年龄',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: '住址',
-  dataIndex: 'address',
-  key: 'address',
-}];
+// }
 
-class Book extends React.Component{
-  render(){
-    return (
-      <Table dataSource={dataSource} columns={columns} />
-    )
+const mapStateToProps = (state) => {
+  return {
+    inputVal: state.book.inputVal,
+    list: state.book.list,
+    columns: [{
+      title: '图书编号',
+      dataIndex: 'bookId',
+      key: 'bookId',
+    }, {
+      title: '书名',
+      dataIndex: 'bookName',
+      key: 'bookName',
+    }, {
+      title: '作者',
+      dataIndex: 'author',
+      key: 'author',
+    }, {
+      title: '海报',
+      dataIndex: 'coverurl',
+      key: 'coverurl',
+      //tetx：图片地址
+      //record：当前数据
+      //index：当前下标
+      render: (text, record, index) => {
+        return <img src={text} alt="" />
+      }
+    }],
+    pagination:{
+      pageSize: state.book.pageSize,
+      total: state.book.total,  //总条数
+      onChange: (page,pageSize) =>{
+        store.dispatch(pageClickAction(page));
+      }
+    }
   }
 }
 
-export default Book;
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+    inputValChange: (e) => {
+      let value = e.target.value;
+      dispatch(inputChange(value));
+    },
+
+    searchBtnClick: () => {
+      dispatch(searchBookAction());
+    },
+
+    getBookList:() => {
+      dispatch(getBookListAction());
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookUI);

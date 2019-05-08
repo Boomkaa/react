@@ -1,14 +1,14 @@
 import React from 'react';
-import { HashRouter,Route,Redirect,Switch } from 'react-router-dom';
+import { Route,Redirect,Switch } from 'react-router-dom';
 import { Layout } from 'antd';
 import Slider from './common/component/Silder';
 import Header from './common/component/Header';
 import bookpage from './pages/book/index';
 import userpage from './pages/user/index';
+import PrvateRoute from '@/common/privateRoute'
 
 function App () {
   return (
-    <HashRouter>
       <Layout>
         <Slider />
         <Layout style={{ marginLeft: 200 }}>
@@ -16,14 +16,13 @@ function App () {
           <Layout.Content style={{ padding:20 }}>
             <Switch>
               {/* exact代表精准匹配 */}
-              <Route path='/' exact component={ bookpage }></Route>
-              <Route path='/user' exact component={ userpage }></Route>
+              <PrvateRoute path='/' exact component={ bookpage }></PrvateRoute>
+              <PrvateRoute path='/user' exact component={ userpage }></PrvateRoute>
               <Redirect to="/"></Redirect>
             </Switch>
           </Layout.Content>
         </Layout>
       </Layout>
-    </HashRouter>
   )
 }
 
